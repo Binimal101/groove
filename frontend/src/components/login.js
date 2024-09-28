@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/login.css'
+import '../styles/login.css'; 
 
 const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
 const REDIRECT_URI = process.env.REDIRECT_URI;
@@ -39,4 +39,3 @@ return (
 }
 
 export default Login;
-
