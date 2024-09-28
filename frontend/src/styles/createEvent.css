@@ -5,7 +5,7 @@ html, body {
     align-items: center;
     justify-content: center;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #4caf50, #1b5e20);
+    background: #1db954;
 }
 
 .create-event-container {

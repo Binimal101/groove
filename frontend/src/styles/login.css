@@ -5,7 +5,7 @@ html, body {
     align-items: center;
     justify-content: center;
     font-family: Arial, sans-serif;
-    background: linear-gradient(45deg, #1db954, #191414);
+    background: #1db954; 
 }
 
 #root {
@@ -43,12 +43,13 @@ html, body {
 
 .login-content p {
     font-size: 1.2rem;
-    margin-bottom: 40px;
+    margin-bottom: 15px;
+    color: #ffffff; 
 }
 
 .login-button {
-    background-color: #1db954;
-    color: #ffffff;
+    background-color: #262726;
+    color: #f8eeee;
     padding: 15px 30px;
     font-size: 1rem;
     border: none;
@@ -65,7 +66,7 @@ html, body {
 }
 
 .spotify-logo {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     margin-right: 10px;
 }
