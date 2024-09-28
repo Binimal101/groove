@@ -17,12 +17,10 @@ jobs:
       run: |
         curl https://cli-assets.heroku.com/install.sh | sh
 
-    - name: Authenticate with Heroku
+    - name: Authenticate with Heroku Container Registry
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       run: |
-        echo $HEROKU_API_KEY | heroku login --username=$HEROKU_EMAIL --password-stdin
         heroku container:login
 
     - name: Build and Push Backend Docker Image
