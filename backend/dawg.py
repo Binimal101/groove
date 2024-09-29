@@ -17,11 +17,11 @@ class Dawg:
 
         # Assign weights to subsets
         self.subset_weights = {
-            "Top Artists": 1,
-            "Saved Albums": 2,
-            "Saved Tracks": 3,
-            "Top Tracks": 4,
-            "Recently Played": 5
+            "Top Artists": 1.1,
+            "Saved Albums": 1.3,
+            "Saved Tracks": 1.5,
+            "Top Tracks": 1.7,
+            "Recently Played": 1.9
         }
 
     def load_from_spotify_data(self, song_hierarchy):
