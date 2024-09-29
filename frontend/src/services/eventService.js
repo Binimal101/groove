@@ -7,15 +7,15 @@ export const joinEvent = async (eventCode, user) => {
     eventCode,
     user,
   });
-  try {
-    const response = await axios.post(`${API_BASE_URL}`, {
-      eventCode,
-      user,
-    });
-    return response.data;
-  } catch (error) {
-    throw error.response ? error.response.data : new Error('Network Error');
-  }
+//   try {
+//     const response = await axios.post(`${API_BASE_URL}`, {
+//       eventCode,
+//       user,
+//     });
+//     return response.data;
+//   } catch (error) {
+//     throw error.response ? error.response.data : new Error('Network Error');
+//   }
 };
 
 export const createEvent = async (eventDetails) => {
@@ -23,9 +23,11 @@ export const createEvent = async (eventDetails) => {
   try {
     // Sending POST request to backend API with eventDetails as the body
     const response = await axios.post(`${API_BASE_URL}`, eventDetails, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+        eventCode: eventDetails.eventCode,
+        eventDetails,
     });
 
     console.log('Response from backend:', response.data);
