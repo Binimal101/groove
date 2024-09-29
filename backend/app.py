@@ -10,7 +10,7 @@ import os
 from database import * # controller for document creation, retrieval, and editing
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True, send_wildcard=True) #will accept any incoming traffic
 
 @app.route("/")
 def home():
@@ -62,7 +62,7 @@ def createUser():
 @app.route("/event/create", methods=["POST"])
 def createEvent():
     eventData = request.form
-    return DB.createEvent(eventData)
+    return jsonify(DB.createEvent(eventData)), 200
 
 @app.route("/song/create", methods=["POST"])
 def createEvent():
