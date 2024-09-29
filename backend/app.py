@@ -73,9 +73,12 @@ def queryReaction(reactionID: int):
 #*****CREATE*****#
 #all create funcs return ID of new stuff
 
-@app.route("/user/create", methods=["POST"])
+@app.route("/user/create", methods=["POST", "OPTIONS"])
 @cross_origin
 def createUser():
+    if request.method == "OPTIONS":        
+        return '', 200
+    
     userData = request.get_json()
     id = DB.createUser(userData)
     if id:
@@ -83,9 +86,12 @@ def createUser():
     else:
         return "ERR, user not found"
 
-@app.route("/event/create", methods=["POST"])
+@app.route("/event/create", methods=["POST", "OPTIONS"])
 @cross_origin
 def createEvent():
+    if request.method == "OPTIONS":
+        return '', 200
+    
     eventData = request.get_json()
     id = DB.createUser(eventData)
     if id:
@@ -93,9 +99,12 @@ def createEvent():
     else:
         return "ERR, event not found"
 
-@app.route("/song/create", methods=["POST"])
+@app.route("/song/create", methods=["POST", "OPTIONS"])
 @cross_origin
 def createSong():
+    if request.method == "OPTIONS":
+        return '', 200
+    
     songData = request.get_json()
     id = DB.createUser(songData)
     if id:
@@ -103,9 +112,12 @@ def createSong():
     else:
         return "ERR, song not found"
 
-@app.route("/reaction/create", methods=["POST"])
+@app.route("/reaction/create", methods=["POST", "OPTIONS"])
 @cross_origin
 def createReaction():
+    if request.method == "OPTIONS":
+        return '', 200
+    
     reactionData = request.get_json()
     id = DB.createUser(reactionData)
     if id:
@@ -115,9 +127,12 @@ def createReaction():
 
 #*****DELETE*****#
 
-@app.route("/user/delete", methods=["POST"])
+@app.route("/user/delete", methods=["POST", "OPTIONS"])
 @cross_origin
 def deleteUser():
+    if request.method == "OPTIONS":
+        return '', 200
+    
     userData = request.get_json()
     rval = DB.deleteUser(userData)
     if rval:
@@ -125,9 +140,11 @@ def deleteUser():
     else:
         return {"error, user not found" : 200}
 
-@app.route("/event/delete", methods=["POST"])
+@app.route("/event/delete", methods=["POST", "OPTIONS"])
 @cross_origin
 def deleteEvent():
+    if request.method == "OPTIONS":
+        return '', 200
     eventData = request.get_json()
     rval = DB.deleteUser(eventData)
     if rval:
@@ -135,9 +152,12 @@ def deleteEvent():
     else:
         return {"error, event not found" : 200}
 
-@app.route("/song/delete", methods=["POST"])
+@app.route("/song/delete", methods=["POST", "OPTIONS"])
 @cross_origin
 def deleteSong():
+    if request.method == "OPTIONS":
+        return '', 200
+    
     songData = request.get_json()
     rval = DB.deleteUser(songData)
     if rval:
@@ -145,9 +165,12 @@ def deleteSong():
     else:
         return {"error, song not found" : 200}
 
-@app.route("/reaction/delete", methods=["POST"])
+@app.route("/reaction/delete", methods=["POST", "OPTIONS"])
 @cross_origin
 def deleteReaction():
+    if request.method == "OPTIONS":
+        return '', 200
+    
     reactionData = request.get_json()
     rval = DB.deleteUser(reactionData)
     if rval:
@@ -156,6 +179,5 @@ def deleteReaction():
         return {"error, reaction not found" : 200}
 
 if __name__ == "__main__":
-    # For local development
     port = int(os.environ.get("PORT", 8080))
     app.run(host="0.0.0.0", port=port)
