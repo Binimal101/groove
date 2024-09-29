@@ -1,4 +1,4 @@
-# main.py
+# dawg_module.py
 
 from spotify_auth import get_access_token
 from spotify_data import (
@@ -10,7 +10,6 @@ from spotify_data import (
     get_artist_top_tracks
 )
 from dawg import Dawg
-from pprint import pprint
 
 def build_song_hierarchy(access_token):
     # Fetch data from Spotify API
@@ -78,6 +77,28 @@ def build_song_hierarchy(access_token):
 
     return song_hierarchy
 
+def calculate_probability_distribution(genre_song_counts):
+    """
+    Calculates the probability distribution of songs within each genre.
+
+    Parameters:
+    - genre_song_counts: dict of genres mapping to dicts of songs and their weighted counts.
+
+    Returns:
+    - genre_probabilities: dict of genres mapping to dicts of songs and their probabilities.
+    """
+    genre_probabilities = {}
+    for genre, songs in genre_song_counts.items():
+        total_weight = sum(songs.values())
+        if total_weight == 0:
+            continue  # Avoid division by zero
+        song_probabilities = {}
+        for song, weight in songs.items():
+            probability = weight / total_weight
+            song_probabilities[song] = probability
+        genre_probabilities[genre] = song_probabilities
+    return genre_probabilities
+
 def probabilityDistro():
     # Get access token
     access_token, refresh_token = get_access_token()
@@ -97,15 +118,23 @@ def probabilityDistro():
     # Get the genre song counts
     genre_song_counts = dawg.getGenreSongCounts()
 
-    # Return the counts
-    return genre_song_counts
+    # Calculate the probability distribution
+    genre_probabilities = calculate_probability_distribution(genre_song_counts)
+
+    # Return the probabilities
+    return genre_probabilities
 
 if __name__ == '__main__':
+    from pprint import pprint
+
     # Call probabilityDistro and get the results
-    counts = probabilityDistro()
-    if counts:
-        # Print the counts
-        print("\nGenre Song Counts:")
-        pprint(counts)
+    genre_probabilities = probabilityDistro()
+    if genre_probabilities:
+        # Print the probabilities
+        print("\nGenre Song Probabilities:")
+        for genre, songs in genre_probabilities.items():
+            print(f"\nGenre: {genre}")
+            for song, probability in songs.items():
+                print(f"  {song}: {probability:.2%}")
     else:
         print("Could not retrieve the probability distribution.")
