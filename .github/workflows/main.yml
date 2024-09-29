@@ -18,7 +18,7 @@ jobs:
       with:
         version: 'latest'
         service_account_key: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
-        project_id: 'YOUR_PROJECT_ID'
+        project_id: 'groove-437022'
 
     - name: Build Docker image (BackEnd)
       run: |
