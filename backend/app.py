@@ -31,7 +31,7 @@ def queue(partyID: int):
     # # Takes 3 songs from internal queue
     # partyID = probabilityDistro().keys()
     # return f"Queue for party {partyID[:3]}"
-    pass
+    return "test"
 # Direct database interactions
 
 #*****QUERY*****#
@@ -67,8 +67,8 @@ def createEvent():
     try:
         eventData = request.get_json()
         return DB.createEvent(eventData)
-    except:
-        return "fuckkkkFUCKUFCKFKCUCKKFCU"
+    except Exception as e:
+        return f"fuckkkkFUCKUFCKFKCUCKKFCU {str(e)}"
     
 @app.route("/song/create", methods=["POST"])
 def createSong():
@@ -108,4 +108,4 @@ def deleteReaction():
 if __name__ == "__main__":
     # For local development
     port = int(os.environ.get("PORT", 8080))
-    app.run(host="0.0.0.0/", port=port)
+    app.run(host="0.0.0.0", port=port)
