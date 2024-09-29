@@ -1,9 +1,14 @@
 import React from 'react';
 import '../styles/login.css'; 
 
-const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
-const REDIRECT_URI = process.env.REDIRECT_URI;
-const AUTH_ENDPOINT = process.env.AUTH_ENDPOINT;
+// const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
+// const REDIRECT_URI = process.env.REDIRECT_URI;
+// const AUTH_ENDPOINT = process.env.AUTH_ENDPOINT;
+// const RESPONSE_TYPE = 'token';
+
+const CLIENT_ID = 'c51e5235da0849e3a6b4e04c0b035f2b';
+const REDIRECT_URI = 'http://10.196.0.110:3000/redirect';
+const AUTH_ENDPOINT = 'http://accounts.spotify.com/authorize';
 const RESPONSE_TYPE = 'token';
 
 console.log("CLIENT_ID:", CLIENT_ID); 
@@ -23,15 +28,15 @@ function Login() {
 return (
     <div className="login-container">
       <div className="login-content">
-        <h2>Welcome to <span className="app-name">Groove</span></h2>
-        <p>Login to start using your Spotify account.</p>
+        <h2>Welcome to Groove</h2>
+        <p>Connect your Spotify account.</p>
         <button className="login-button" onClick={handleLogin}>
           <img
             src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg"
             alt="Spotify Logo"
             className="spotify-logo"
           />
-          Login with Spotify
+          Connect
         </button>
       </div>
     </div>
@@ -39,3 +44,4 @@ return (
 }
 
 export default Login;
+

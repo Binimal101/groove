@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import Login from './components/login';
+import Dashboard from './components/dashboard';
+import CreateEvent from './components/createEvent';
+import AdminPage from './components/adminPage';
 import { getUserProfile } from './services/spotifyService';
-import './App.css'; 
-import { useNavigate } from 'react-router-dom';
+import './styles/App.css'; 
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 
 function App() {
   const [token, setToken] = useState('');
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [eventCode, setEventCode] = useState('');
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Parsing the access token from the URL after Spotify login
@@ -55,57 +57,23 @@ function App() {
     window.localStorage.removeItem('token');
   };
 
-  const handleEventCodeSubmit = () => {
-    console.log(`Entered Event Code: ${eventCode}`);
-    navigate(`/event/${eventCode}`);
-  };
-
-  const handleCreateEvent = () => {
-    navigate('/create-event');
-  };
-
   return (
     <div className="App">
       {!token ? (
         <Login />
       ) : (
-        <div>
-          <button onClick={logout}>Logout</button>
-          {loading ? (
-            <p>Loading...</p>
-          ) : (
-            <div>
-              <h1>Welcome, {user ? user.display_name : 'Spotify User'}</h1>
-              {user && (
-                <div>
-                  {user.images.length > 0 && (
-                    <img src={user.images[0].url} alt="Profile" width="100" />
-                  )}
-                  <p>Email: {user.email}</p>
-                </div>
-              )}
-              <div className="event-actions">
-                <div className="enter-event">
-                  <h3>Enter Event Code</h3>
-                  <input
-                    type="text"
-                    value={eventCode}
-                    onChange={e => setEventCode(e.target.value)}
-                    placeholder="Enter event code"
-                  />
-                  <button onClick={handleEventCodeSubmit}>Submit</button>
-                </div>
-                <div className="create-event">
-                  <h3>Or Create a New Event</h3>
-                  <button onClick={handleCreateEvent}>Create Event</button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+        loading ? (
+          <p>Loading...</p>
+        ) : (
+          <Routes>
+            <Route path="/" element={<Dashboard user={user} onLogout={logout} />} />
+            <Route path="/create-event" element={<CreateEvent />} />
+            <Route path="/admin/:eventCode" element={<AdminPage />} />
+            <Route path="*" element={<p>Page not found</p>} />
+          </Routes>
+        )
       )}
     </div>
   );
 }
-
 export default App;
