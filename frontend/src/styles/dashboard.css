@@ -1,0 +1,202 @@
+/* General Page Styling */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+    background: #1db954; /* Green Background */
+}
+
+/* Container for the Dashboard */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.85); /* Dark Background for Container */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.4);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    color: #ffffff; /* White text */
+}
+
+/* Welcome Section Styling */
+.welcome-section h1 {
+    font-size: 2rem;
+    color: #66bb6a; /* Lighter Green for Headers */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.welcome-section .email {
+    font-size: 1rem;
+    color: #f8f8f8;
+    margin-bottom: 20px;
+}
+
+.profile-picture {
+    border-radius: 50%;
+    margin-bottom: 15px;
+    border: 3px solid #1db954; /* Border to match the color theme */
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+/* Event Section Styling */
+.event-section h2 {
+    font-size: 1.5rem;
+    color: #ffffff; /* White text for consistency */
+    margin-bottom: 15px;
+}
+
+.event-code-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.event-code-input {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    background-color: #f8f8f8;
+    color: #333;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.event-code-input:focus {
+    border-color: #1db954;
+    background-color: #ffffff;
+    outline: none;
+}
+
+/* Submit Button Styling */
+.submit-button {
+    background-color: #1db954; /* Green matching background */
+    color: #ffffff;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    max-width: 200px;
+    margin: 10px auto;
+}
+
+.submit-button:hover {
+    background-color: #1db954;
+    transform: scale(1.03);
+}
+
+/* Create Event Section Styling */
+.create-event-section h3 {
+    font-size: 1.3rem;
+    color: #ffffff;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.create-event-button {
+    background-color: #1db954;
+    color: #ffffff;
+    border: none;
+    border-radius: 30px;
+    padding: 15px 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    max-width: 200px;
+    margin-bottom: 20px; /* Add margin to separate from logout button */
+}
+
+.create-event-button:hover {
+    background-color: #1db954;
+    transform: scale(1.03);
+}
+
+/* Logout Button Styling - Below Create Event Button */
+.logout-button {
+    background: #ff6b6b; /* Light Red for Logout */
+    color: #070707;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    max-width: 200px;
+    margin-top: 20px; /* Add spacing from the Create Event button */
+}
+
+.logout-button:hover {
+    background-color: #ff5252;
+}
+
+/* Media Queries for Responsive Design */
+
+/* Adjustments for Mobile Devices */
+@media (max-width: 600px) {
+    .dashboard-container {
+        padding: 20px 15px; /* Reduce padding for smaller screens */
+        max-width: 100%; /* Adjust container width for mobile */
+    }
+
+    .logout-button,
+    .create-event-button,
+    .submit-button {
+        padding: 10px 15px; /* Adjust button padding for smaller screens */
+        font-size: 0.9rem; /* Adjust button font size for smaller screens */
+    }
+
+    .welcome-section h1 {
+        font-size: 1.8rem; /* Reduce header size for smaller screens */
+    }
+
+    .welcome-section .email {
+        font-size: 0.9rem; /* Reduce email text size for mobile */
+    }
+
+    .profile-picture {
+        width: 80px; /* Reduce size of profile picture for mobile */
+        height: 80px;
+    }
+
+    .event-section h2 {
+        font-size: 1.3rem; /* Reduce header size for event section */
+    }
+}
+
+/* Adjustments for Larger Tablets and Smaller Desktops */
+@media (min-width: 600px) and (max-width: 900px) {
+    .dashboard-container {
+        padding: 30px 20px; /* Slightly increase padding for larger screens */
+        max-width: 600px; /* Adjust max-width for larger tablets */
+    }
+
+    .logout-button,
+    .create-event-button,
+    .submit-button {
+        padding: 12px 18px;
+        font-size: 2rem;
+    }
+
+    .welcome-section h1 {
+        font-size: 1.9rem;
+    }
+
+    .event-section h2 {
+        font-size: 1.4rem;
+    }
+}

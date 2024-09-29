@@ -1,3 +1,4 @@
+/* General Page Styling */
 html, body {
     height: 100%;
     margin: 0;
@@ -8,64 +9,166 @@ html, body {
     background: #1db954;
 }
 
+/* Container for the Event Form */
 .create-event-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.85);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.4);
     width: 100%;
-    max-width: 600px;
+    max-width: 500px;
     text-align: center;
     color: #ffffff;
+    box-sizing: border-box;
+    margin: 20px; /* Add margin for better appearance on small screens */
 }
 
+/* Header for the Form */
 h2 {
     margin-bottom: 20px;
-    font-size: 2.5rem;
-    color: #4caf50;
+    font-size: 2rem;
+    color: #66bb6a;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
+/* Form Styling */
 form {
     width: 100%;
 }
 
+/* Label Styling */
 label {
     display: block;
-    margin-bottom: 10px;
-    font-size: 1.2rem;
+    margin-bottom: 5px;
+    font-size: 1rem;
+    font-weight: bold;
     text-align: left;
+    width: 90%; /* Align with input width for consistency */
+    margin-left: auto;
+    margin-right: auto;
 }
 
+/* Input and Textarea Styling */
 input[type="text"],
+input[type="datetime-local"],
 textarea {
-    width: 100%;
+    width: 90%;
     padding: 10px;
-    margin-bottom: 20px;
-    border: none;
-    border-radius: 10px;
-    font-size: 1rem;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    background-color: #f8f8f8;
+    color: #333;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
+/* Input and Textarea Focus Effect */
+input[type="text"]:focus,
+input[type="datetime-local"]:focus,
+textarea:focus {
+    border-color: #1db954;
+    background-color: #ffffff;
+    outline: none;
+}
+
+/* Textarea Specific Styling */
 textarea {
-    height: 100px;
+    height: 80px;
+    resize: vertical;
 }
 
-button {
-    background-color: #4caf50;
+/* Primary Button Styling (Create Event) */
+button.create-event-button {
+    background-color: #1db954;
     color: #ffffff;
-    padding: 15px 30px;
+    padding: 10px 20px;
     font-size: 1rem;
     border: none;
-    border-radius: 50px;
+    border-radius: 30px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 20px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+    max-width: 200px;
+    margin-top: 15px; /* Add some space above the button for better readability */
 }
 
-button:hover {
+button.create-event-button:hover {
     background-color: #66bb6a;
+    transform: scale(1.03);
+}
+
+/* Back Button Styling */
+button.back-button {
+    background-color: #1db954;
+    color: #ffffff;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+    max-width: 200px;
+    margin-top: 10px; /* Add space between buttons */
+}
+
+button.back-button:hover {
+    background-color: #bdbdbd;
+    transform: scale(1.03);
+}
+
+/* Media Queries for Responsive Design */
+
+/* Adjustments for Mobile Devices */
+@media (max-width: 600px) {
+    .create-event-container {
+        padding: 15px; /* Reduce padding for smaller screens */
+        max-width: 90%; /* Adjust container width for mobile */
+    }
+
+    h2 {
+        font-size: 1.8rem; /* Reduce header size for smaller screens */
+    }
+
+    label {
+        font-size: 0.9rem; /* Reduce label size for mobile */
+    }
+
+    input[type="text"],
+    input[type="datetime-local"],
+    textarea {
+        width: 95%; /* Increase width to fill more space on mobile */
+        font-size: 0.85rem; /* Reduce font size for better fit */
+        padding: 8px; /* Reduce padding for smaller screens */
+    }
+
+    button.create-event-button,
+    button.back-button {
+        padding: 10px 15px; /* Adjust button padding for smaller screens */
+        font-size: 0.9rem; /* Adjust button font size */
+    }
+}
+
+/* Adjustments for Larger Tablets and Smaller Desktops */
+@media (min-width: 600px) and (max-width: 900px) {
+    .create-event-container {
+        padding: 20px; /* Adjust padding for larger tablets */
+        max-width: 600px; /* Slightly increase max-width for larger devices */
+    }
+
+    h2 {
+        font-size: 1.9rem; /* Adjust header size for larger tablets */
+    }
+
+    button.create-event-button,
+    button.back-button {
+        padding: 12px 20px;
+        font-size: 1rem;
+    }
 }
