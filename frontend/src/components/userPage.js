@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import '../styles/userPage.css'; // Assuming you have a CSS file for this page
 
 function UserEventPage() {
   const { eventCode } = useParams(); // Get the event code from the URL
@@ -9,7 +10,22 @@ function UserEventPage() {
   const event = JSON.parse(localStorage.getItem(`event_${eventCode}`));
 
   if (!event) {
-    return <p>Event not found. Please check the code or contact the event host.</p>;
+    return (
+      <div className="user-event-page-container">
+        <p>Event not found. Please check the code or contact the event host.</p>
+        <button onClick={() => navigate('/')} className="back-button">Back to Dashboard</button>
+      </div>
+    );
+  }
+
+  // Check if event is inactive
+  if (!event.isActive) {
+    return (
+      <div className="user-event-page-container">
+        <p>This event has ended and is no longer joinable.</p>
+        <button onClick={() => navigate('/')} className="back-button">Back to Dashboard</button>
+      </div>
+    );
   }
 
   const handleGoBack = () => {

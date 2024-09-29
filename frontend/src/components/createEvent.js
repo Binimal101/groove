@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { createEvent } from '../services/eventService'; // Import createEvent function
 import '../styles/createEvent.css';
 
 function CreateEvent() {
@@ -17,23 +18,38 @@ function CreateEvent() {
     navigate(-1);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Generate a unique event code
     const eventCode = Math.random().toString(36).substr(2, 8).toUpperCase();
+    console.log('Event Code Upon Creation: ', eventCode); 
 
-    // Store event details (could be saved to a backend or context instead of localStorage)
+    // Store event details
     const eventDetails = {
+      eventCode,
       eventName,
       eventLocation,
       eventStartDate,
       eventEndDate,
       eventHost,
       eventDescription,
+      isActive: true, // Indicates that the event is active
     };
 
+    console.log('Event Details Being Created: ', eventDetails);
+
+    // Save to localStorage for now
     localStorage.setItem(`event_${eventCode}`, JSON.stringify(eventDetails));
+
+    // Send event details to backend (optional)
+    try {
+      console.log('Sending event details to backend...');
+      const response = await createEvent(eventDetails); // Use the createEvent function
+      console.log('Event successfully created on backend:', response);
+    } catch (error) {
+      console.error('Error sending event details to backend:', error);
+    }
 
     // Navigate to AdminPage with event code
     navigate(`/admin/${eventCode}`);

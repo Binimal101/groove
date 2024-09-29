@@ -3,9 +3,10 @@ import Login from './components/login';
 import Dashboard from './components/dashboard';
 import CreateEvent from './components/createEvent';
 import AdminPage from './components/adminPage';
-import { getUserProfile } from './services/spotifyService';
+import UserEventPage from './components/userPage'; // Assuming this exists
+import { getUserProfile, sendUserInfoToBackend } from './services/spotifyService'; // Add your sendUserInfoToBackend logic here
 import './styles/App.css'; 
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 function App() {
   const [token, setToken] = useState('');
@@ -22,14 +23,14 @@ function App() {
       const parsedToken = hash
         .substring(1)
         .split('&')
-        .find(elem => elem.startsWith('access_token'))
+        .find((elem) => elem.startsWith('access_token'))
         ?.split('=')[1];
 
       if (parsedToken) {
         token = parsedToken;
-        window.location.hash = ''; 
+        window.location.hash = '';
         window.localStorage.setItem('token', token);
-        navigate('/'); 
+        navigate('/');
       }
     }
 
@@ -40,11 +41,14 @@ function App() {
     if (token) {
       setLoading(true);
       getUserProfile(token)
-        .then(userData => {
+        .then((userData) => {
           setUser(userData);
+          console.log('User Profile Data:', userData);
+          // Send the user information to the backend
+          sendUserInfoToBackend(userData);
           setLoading(false);
         })
-        .catch(err => {
+        .catch((err) => {
           console.error('Error fetching user profile:', err);
           setLoading(false);
         });
@@ -55,6 +59,7 @@ function App() {
     setToken('');
     setUser(null);
     window.localStorage.removeItem('token');
+    navigate('/'); // Redirect to home after logging out
   };
 
   return (
@@ -69,6 +74,7 @@ function App() {
             <Route path="/" element={<Dashboard user={user} onLogout={logout} />} />
             <Route path="/create-event" element={<CreateEvent />} />
             <Route path="/admin/:eventCode" element={<AdminPage />} />
+            <Route path="/event/:eventCode" element={<UserEventPage />} />
             <Route path="*" element={<p>Page not found</p>} />
           </Routes>
         )
@@ -76,4 +82,5 @@ function App() {
     </div>
   );
 }
+
 export default App;
