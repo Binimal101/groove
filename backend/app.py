@@ -60,11 +60,13 @@ def createUser():
     return DB.createUser(userData)
 
 @app.route("/event/create", methods=["POST"])
-@cross_origin()
 def createEvent():
-    eventData = request.get_json()
-    return DB.createEvent(eventData), 200
-
+    try:
+        eventData = request.get_json()
+        return DB.createEvent(eventData)
+    except:
+        return "fuckkkkFUCKUFCKFKCUCKKFCU"
+    
 @app.route("/song/create", methods=["POST"])
 def createSong():
     songData = request.get_json()
@@ -84,8 +86,11 @@ def deleteUser():
 
 @app.route("/event/delete", methods=["POST"])
 def deleteEvent():
-    eventData = request.get_json()
-    return DB.deleteEvent(eventData)
+    try:
+        eventData = request.get_json()
+        return DB.deleteEvent(eventData)
+    except:
+        return "fuckkkk"
 
 @app.route("/song/delete", methods=["POST"])
 def deleteSong():
