@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from markupsafe import escape
 
 from database import DB
@@ -60,6 +60,7 @@ def createUser():
     return DB.createUser(userData)
 
 @app.route("/event/create", methods=["POST"])
+@cross_origin()
 def createEvent():
     eventData = request.get_json()
     return DB.createEvent(eventData), 200
