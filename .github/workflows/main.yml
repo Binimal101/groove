@@ -1,0 +1,55 @@
+name: GCP Build and Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build_and_deploy:
+    name: Build and Deploy to GCP (FRONT & BACKEND DEPLOYMENT)
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
+
+    - name: Configure Docker to use gcloud as a credential helper
+      run: |
+        gcloud auth configure-docker
+
+    - name: Build Docker image (BackEnd)
+      run: |
+        docker build -t gcr.io/groove-437022/backend:${{ github.sha }} ./backend
+
+    - name: Build Docker image (FrontEnd)
+      run: |
+        docker build -t gcr.io/groove-437022/frontend:${{ github.sha }} ./frontend
+
+    - name: Push Docker image (BackEnd)
+      run: |
+        docker push gcr.io/groove-437022/backend:${{ github.sha }}
+
+    - name: Push Docker image (FrontEnd)
+      run: |
+        docker push gcr.io/groove-437022/frontend:${{ github.sha }}
+
+    - name: Deploy to Cloud Run (BackEnd)
+      run: |
+        gcloud run deploy backend-service \
+          --image gcr.io/groove-437022/backend:${{ github.sha }} \
+          --platform managed \
+          --region us-central1 \
+          --allow-unauthenticated
+
+    - name: Deploy to Cloud Run (FrontEnd)
+      run: |
+        gcloud run deploy frontend-service \
+          --image gcr.io/groove-437022/frontend:${{ github.sha }} \
+          --platform managed \
+          --region us-central1 \
+          --allow-unauthenticated
