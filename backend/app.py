@@ -10,7 +10,7 @@ import os
 from database import * # controller for document creation, retrieval, and editing
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True, send_wildcard=True) #will accept any incoming traffic
+CORS(app) #will accept any incoming traffic
 
 @app.route("/")
 def home():
@@ -31,7 +31,7 @@ def queue(partyID: int):
     # # Takes 3 songs from internal queue
     # partyID = probabilityDistro().keys()
     # return f"Queue for party {partyID[:3]}"
-
+    pass
 # Direct database interactions
 
 #*****QUERY*****#
@@ -56,44 +56,44 @@ def queryReaction(reactionID: int):
 
 @app.route("/user/create", methods=["POST"])
 def createUser():
-    userData = request.form
+    userData = request.get_json()
     return DB.createUser(userData)
 
 @app.route("/event/create", methods=["POST"])
 def createEvent():
-    eventData = request.form
-    return jsonify(DB.createEvent(eventData)), 200
+    eventData = request.get_json()
+    return DB.createEvent(eventData), 200
 
 @app.route("/song/create", methods=["POST"])
-def createEvent():
-    songData = request.form
+def createSong():
+    songData = request.get_json()
     return DB.createEvent(songData)
 
 @app.route("/reaction/create", methods=["POST"])
-def createEvent():
-    reactionData = request.form
+def createReaction():
+    reactionData = request.get_json()
     return DB.createEvent(reactionData)
 
 #*****DELETE*****#
 
 @app.route("/user/delete", methods=["POST"])
 def deleteUser():
-    userData = request.form
+    userData = request.get_json()
     return DB.deleteUser(userData)
 
 @app.route("/event/delete", methods=["POST"])
 def deleteEvent():
-    eventData = request.form
+    eventData = request.get_json()
     return DB.deleteEvent(eventData)
 
 @app.route("/song/delete", methods=["POST"])
-def deleteEvent():
-    songData = request.form
+def deleteSong():
+    songData = request.get_json()
     return DB.deleteEvent(songData)
 
 @app.route("/reaction/delete", methods=["POST"])
-def deleteEvent():
-    reactionData = request.form
+def deleteReaction():
+    reactionData = request.get_json()
     return DB.deleteEvent(reactionData)
 
 if __name__ == "__main__":
