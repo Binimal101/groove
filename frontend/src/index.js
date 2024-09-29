@@ -13,7 +13,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />} />
-        <Route path="/redirect" element={<App />} />
+        <Route path="/redirect/*" element={<App />} />
         <Route path="/create-event" element={<CreateEvent />} />
         <Route path="/admin/:eventCode" element={<AdminPage />} />
         <Route path="/event/:eventCode" element={<UserEventPage />} /> {/* Add UserEventPage route */}

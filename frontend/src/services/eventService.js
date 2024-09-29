@@ -7,15 +7,15 @@ export const joinEvent = async (eventCode, user) => {
     eventCode,
     user,
   });
-//   try {
-//     const response = await axios.post(`${API_BASE_URL}`, {
-//       eventCode,
-//       user,
-//     });
-//     return response.data;
-//   } catch (error) {
-//     throw error.response ? error.response.data : new Error('Network Error');
-//   }
+  try {
+    const response = await axios.post(`${API_BASE_URL}`, {
+      eventCode,
+      user,
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : new Error('Network Error');
+  }
 };
 
 export const createEvent = async (eventDetails) => {
