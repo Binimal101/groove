@@ -6,7 +6,7 @@ on:
 
 jobs:
   build_and_deploy:
-    name: Build and Deploy to GCP (FRONT & BACKEND DEPL.)
+    name: Build and Deploy to GCP (FRONT & BACKEND DEPLOYMENT)
     runs-on: ubuntu-latest
 
     steps:
@@ -16,17 +16,17 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
       with:
-        version: 'latest'
-        service_account_key: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
         project_id: 'groove-437022'
+        credentials: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
+        version: 'latest'
 
     - name: Build Docker image (BackEnd)
       run: |
-        docker build -t gcr.io/groove-437022/backend:${{ github.sha }} .
+        docker build -t gcr.io/groove-437022/backend:${{ github.sha }} ./backend
 
     - name: Build Docker image (FrontEnd)
       run: |
-        docker build -t gcr.io/groove-437022/frontend:${{ github.sha }} .
+        docker build -t gcr.io/groove-437022/frontend:${{ github.sha }} ./frontend
 
     - name: Push Docker image (BackEnd)
       run: |
