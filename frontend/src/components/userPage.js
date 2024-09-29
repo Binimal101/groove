@@ -7,7 +7,7 @@ function UserEventPage() {
   const navigate = useNavigate();
 
   // Retrieve the event details from localStorage
-  //const event = JSON.parse(localStorage.getItem(`event_${eventCode}`));
+  const event = JSON.parse(localStorage.getItem(`event_${eventCode}`));
 
   if (!event) {
     return (
