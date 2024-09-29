@@ -1,81 +1,95 @@
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
 
-#getters
+cred = credentials.Certificate("github-actions@groove-437022.iam.gserviceaccount.com")
+app = firebase_admin.initialize_app(cred)
+cli = firestore.client()
+
+def decompose(obj):
+    return obj.to_dict().items()    
+
 class DB:
-    mongoPass="ML8w@VN_bsRu!@M"
-    uri = "mongodb+srv://matthewtujague:{mongoPass}@groove.11ipv.mongodb.net/?retryWrites=true&w=majority&appName=groove"
-    global client
-    
-    client = MongoClient(uri, server_api=ServerApi('1'))["grooveDB"]
 
     @staticmethod
     def getEventParams(eventID: str):
-        pass
+        for event in cli.collection("Event").stream():
+            if event.id == eventID:
+                return decompose(event)
+        return {"Error" : "document not found"}
 
     @staticmethod
     def getUserParams(userID: str):
-        pass
+        for user in cli.collection("User").stream():
+            if user.id == userID:
+                return decompose(user)
+        return {"Error" : "document not found"}
 
     @staticmethod
     def getSongParams(songID: str):
-        pass
+        for song in cli.collection("Song").stream():
+            if song.id == songID:
+                return decompose(song)
+        return {"Error" : "document not found"}
 
     @staticmethod
     def getReactionParams(reactionID: str):
-        pass
+        for reaction in cli.collection("Reaction").stream():
+            if reaction.id == reactionID:
+                return decompose(reaction)
+        return {"Error" : "document not found"}
 
 
     #setters & doc creation
     #TODO all
     @staticmethod
     def createEvent(eventData: dict):
-        event_collection = client['Event']
-        result = event_collection.insert_one(eventData) #returns new ID for eventDocument
-        return result
+        doc = cli.collection("Event").add(eventData) #returns new ID for eventDocument
+        return doc.id
     
     @staticmethod
     def createUser(userData: dict):
-        event_collection = client['User']
-        result = event_collection.insert_one(userData) #returns new ID for eventDocument
-        return result
+        doc = cli.collection("User").add(userData) #returns new ID for eventDocument
+        return doc.id
 
     @staticmethod
     def createSong(songData: dict):
-        event_collection = client['Song']
-        result = event_collection.insert_one(songData) #returns new ID for eventDocument
-        return result
+        doc = cli.collection("Song").add(songData) #returns new ID for eventDocument
+        return doc.id
 
     @staticmethod
     def createReaction(reactionData: dict):
-        event_collection = client['Reaction']
-        result = event_collection.insert_one(reactionData) #returns new ID for eventDocument
-        return result
+        doc = cli.collection("Reaction").add(reactionData) #returns new ID for eventDocument
+        return doc.id
     
     #deletions
     #TODO all
 
     @staticmethod
     def deleteEvent(eventID: int):
-        event_collection = client['Event']
-        result = event_collection.delete_one({"id_" : eventID}) #returns new ID for eventDocument
-        return result
+        for event in cli.collection("Event").stream():
+            if event.id == eventID:
+                event.delete()
+        return {"Error" : "document not found"}
     
     @staticmethod
     def deleteUser(userID: int):
-        event_collection = client['User']
-        result = event_collection.delete_one({"id_" : userID}) #returns new ID for eventDocument
-        return result
+        for user in cli.collection("User").stream():
+            if user.id == userID:
+                user.delete()
+        return {"Error" : "document not found"}
 
     @staticmethod
     def deleteSong(songID: int):
-        event_collection = client['Song']
-        result = event_collection.delete_one({"id_" : songID}) #returns new ID for eventDocument
-        return result
+        for song in cli.collection("Song").stream():
+            if song.id == songID:
+                song.delete()
+        return {"Error" : "document not found"}
 
     @staticmethod
     def deleteReaction(reactionID: int):
-        event_collection = client['Reaction']
-        result = event_collection.delete_one({"id_" : reactionID}) #returns new ID for eventDocument
-        return result
+        for reaction in cli.collection("Reaction").stream():
+            if reaction.id == reactionID:
+                reaction.delete()
+        return {"Error" : "document not found"}
 
