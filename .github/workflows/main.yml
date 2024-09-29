@@ -18,11 +18,9 @@ jobs:
       with:
         credentials_json: '${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}'
 
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v1
-      with:
-        project_id: 'groove-437022'
-        version: 'latest'
+    - name: Configure Docker to use gcloud as a credential helper
+      run: |
+        gcloud auth configure-docker
 
     - name: Build Docker image (BackEnd)
       run: |
