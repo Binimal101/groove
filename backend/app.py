@@ -38,8 +38,11 @@ def queue(partyID: int):
 
 @app.route("/event/<int:eventID>", methods=["GET"])
 def queryEvent(eventID: int):
-    return DB.getEventParams(eventID)
-
+    try:
+        return DB.getEventParams(eventID)
+    except Exception as e:
+        return f"Err: {str(e)}"
+    
 @app.route("/user/<int:userID>", methods=["GET"])
 def queryUser(userID: int):
     return DB.getUserParams(userID)
@@ -89,8 +92,8 @@ def deleteEvent():
     try:
         eventData = request.get_json()
         return DB.deleteEvent(eventData)
-    except:
-        return "fuckkkk"
+    except Exception as e:
+        return f"fuckkkk err:{str(e)}"
 
 @app.route("/song/delete", methods=["POST"])
 def deleteSong():
