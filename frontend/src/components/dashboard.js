@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { joinEvent } from '../services/eventService';
 import '../styles/dashboard.css';
 
 function Dashboard({ user, onLogout }) {
@@ -9,21 +10,30 @@ function Dashboard({ user, onLogout }) {
   const navigate = useNavigate();
 
   // Handles submission of event code by validating it
-  const handleEventCodeSubmit = (e) => {
+  const handleEventCodeSubmit = async (e) => {
     e.preventDefault();
-    const event = localStorage.getItem(`event_${eventCode}`);
-    if (event) {
-      // Valid event code, navigate to the event page
-      console.log(`Navigating to Event with Code: ${eventCode}`);
+
+    // Log the data before sending the POST request
+    console.log('Attempting to join event with the following data:', {
+      eventCode,
+      user: user ? user.display_name : 'Anonymous',
+    });
+
+    try {
+      const response = await joinEvent(eventCode, user ? user.display_name : 'Anonymous');
+      console.log('Received response from joinEvent request:', response);
       setSuccessMessage('Successfully joined the event! Navigating to event...');
       setErrorMessage('');
+      
+      // Navigate to user page after successful response
       setTimeout(() => {
         navigate(`/event/${eventCode}`);
       }, 1000); // Delay navigation for user feedback
-    } else {
-      // Invalid event code, show an error message
+
+    } catch (error) {
+      console.error('Error joining event:', error);
+      setErrorMessage(error.message || 'Invalid event code. Please try again.');
       setSuccessMessage('');
-      setErrorMessage('Invalid event code. Please try again.');
     }
   };
 
