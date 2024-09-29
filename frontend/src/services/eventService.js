@@ -26,8 +26,8 @@ export const createEvent = async (eventDetails) => {
     //   headers: {
     //     'Content-Type': 'application/json',
     //   },
-    eventCode,
-      user,
+        eventCode: eventDetails.eventCode,
+        eventDetails,
     });
 
     console.log('Response from backend:', response.data);
