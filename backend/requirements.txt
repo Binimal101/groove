@@ -2,6 +2,5 @@ Flask==3.0.3
 MarkupSafe==2.1.5
 Requests==2.32.3
 gunicorn
-pymongo
-dnspython
+firebase-admin
 flask-cors

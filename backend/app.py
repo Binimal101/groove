@@ -13,42 +13,60 @@ app = Flask(__name__)
 CORS(app) #will accept any incoming traffic
 
 @app.route("/")
+@cross_origin
 def home():
     return "HOME"
 
 @app.route("/redirect")
+@cross_origin
 def redundantRedirect():
     # Specifically for OAuth on server-side Spotify requests
     return "Redirect endpoint"
 
 @app.route("/nextSong/<int:partyID>", methods=["GET"])
+@cross_origin
 def nextSong(partyID: int):
     # Implement your logic here
     return f"Next song for party {partyID}"
 
 @app.route("/queue/<int:partyID>", methods=["GET"])
+@cross_origin
 def queue(partyID: int):
     # # Takes 3 songs from internal queue
     # partyID = probabilityDistro().keys()
     # return f"Queue for party {partyID[:3]}"
-    return "test"
+    return "testing"
+
+#linear search sucks :<
+@app.route("/testEventCode/<string:eventCode>", methods=["GET"])
+@cross_origin
+def testEventCode(eventCode: str):
+    for event in DB.grabCollection("Event").stream:
+        if event.eventCode == eventCode:
+            return {"eventCodeFound" : 1}
+    return {"eventCodeFound" : 0}
+
 # Direct database interactions
 
 #*****QUERY*****#
 
 @app.route("/event/<int:eventID>", methods=["GET"])
+@cross_origin
 def queryEvent(eventID: int):
     return DB.getEventParams(eventID)
     
 @app.route("/user/<int:userID>", methods=["GET"])
+@cross_origin
 def queryUser(userID: int):
     return DB.getUserParams(userID)
 
 @app.route("/song/<int:songID>", methods=["GET"])
+@cross_origin
 def querySong(songID: int):
     return DB.getSongParams(songID)
 
 @app.route("/reaction/<int:reactionID>", methods=["GET"])
+@cross_origin
 def queryReaction(reactionID: int):
     return DB.getReactionParams(reactionID)
 
@@ -56,6 +74,7 @@ def queryReaction(reactionID: int):
 #all create funcs return ID of new stuff
 
 @app.route("/user/create", methods=["POST"])
+@cross_origin
 def createUser():
     userData = request.get_json()
     id = DB.createUser(userData)
@@ -65,6 +84,7 @@ def createUser():
         return "ERR, user not found"
 
 @app.route("/event/create", methods=["POST"])
+@cross_origin
 def createEvent():
     eventData = request.get_json()
     id = DB.createUser(eventData)
@@ -73,9 +93,8 @@ def createEvent():
     else:
         return "ERR, event not found"
 
-    
-    
 @app.route("/song/create", methods=["POST"])
+@cross_origin
 def createSong():
     songData = request.get_json()
     id = DB.createUser(songData)
@@ -85,6 +104,7 @@ def createSong():
         return "ERR, song not found"
 
 @app.route("/reaction/create", methods=["POST"])
+@cross_origin
 def createReaction():
     reactionData = request.get_json()
     id = DB.createUser(reactionData)
@@ -96,6 +116,7 @@ def createReaction():
 #*****DELETE*****#
 
 @app.route("/user/delete", methods=["POST"])
+@cross_origin
 def deleteUser():
     userData = request.get_json()
     rval = DB.deleteUser(userData)
@@ -105,6 +126,7 @@ def deleteUser():
         return {"error, user not found" : 200}
 
 @app.route("/event/delete", methods=["POST"])
+@cross_origin
 def deleteEvent():
     eventData = request.get_json()
     rval = DB.deleteUser(eventData)
@@ -114,6 +136,7 @@ def deleteEvent():
         return {"error, event not found" : 200}
 
 @app.route("/song/delete", methods=["POST"])
+@cross_origin
 def deleteSong():
     songData = request.get_json()
     rval = DB.deleteUser(songData)
@@ -123,6 +146,7 @@ def deleteSong():
         return {"error, song not found" : 200}
 
 @app.route("/reaction/delete", methods=["POST"])
+@cross_origin
 def deleteReaction():
     reactionData = request.get_json()
     rval = DB.deleteUser(reactionData)

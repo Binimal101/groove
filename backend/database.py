@@ -93,3 +93,6 @@ class DB:
                 reaction.delete()
         return {"Error" : "document not found"}
 
+    @staticmethod
+    def grabCollection(collectionName: str):
+        return cli.collection(collectionName)

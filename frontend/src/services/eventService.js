@@ -23,9 +23,6 @@ export const createEvent = async (eventDetails) => {
   try {
     // Sending POST request to backend API with eventDetails as the body
     const response = await axios.post(`${API_BASE_URL}`, eventDetails, {
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
         eventCode: eventDetails.eventCode,
         eventDetails,
     });
