@@ -37,6 +37,9 @@ jobs:
     - name: Push Docker image (FrontEnd)
       run: |
         docker push gcr.io/groove-437022/frontend:${{ github.sha }}
+   
+    - name: Set up Firebase Admin SDK credentials
+      run: echo "${{ secrets.FIREBASE_ADMIN_KEY }}" > /tmp/firebase-admin-key.json
 
     - name: Deploy to Cloud Run (BackEnd)
       run: |
