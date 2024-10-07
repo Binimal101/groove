@@ -59,20 +59,20 @@ def testEventCode(eventCode: str):
 
 #*****QUERY*****#
 
-@app.route("/event/<int:eventID>", methods=["GET"])
-def queryEvent(eventID: int):
+@app.route("/event/<str:eventID>", methods=["GET"])
+def queryEvent(eventID: str):
     return jsonify(DB.getEventParams(eventID)), 200
     
-@app.route("/user/<int:userID>", methods=["GET"])
-def queryUser(userID: int):
+@app.route("/user/<str:userID>", methods=["GET"])
+def queryUser(userID: str):
     return jsonify(DB.getUserParams(userID)), 200
 
-@app.route("/song/<int:songID>", methods=["GET"])
-def querySong(songID: int):
+@app.route("/song/<str:songID>", methods=["GET"])
+def querySong(songID: str):
     return jsonify(DB.getSongParams(songID)), 200
 
-@app.route("/reaction/<int:reactionID>", methods=["GET"])
-def queryReaction(reactionID: int):
+@app.route("/reaction/<str:reactionID>", methods=["GET"])
+def queryReaction(reactionID: str):
     return jsonify(DB.getReactionParams(reactionID)), 200
 
 #*****CREATE*****#

@@ -6,7 +6,7 @@ firebase_admin.initialize_app()
 cli = firestore.client()
 
 def decompose(obj):
-    return obj.to_dict().items()    
+    return obj.to_dict()    
 
 class DB:
 
