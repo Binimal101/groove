@@ -13,170 +13,199 @@ app = Flask(__name__)
 CORS(app) #will accept any incoming traffic
 
 @app.route("/")
-@cross_origin
 def home():
-    return "HOME"
+    return jsonify({
+        "message" : "HOME"
+    }), 200
 
 @app.route("/redirect")
-@cross_origin
 def redundantRedirect():
     # Specifically for OAuth on server-side Spotify requests
-    return "Redirect endpoint"
+    return jsonify({
+        "message" : "Redirect endpoint"
+    }), 200
 
 @app.route("/nextSong/<int:partyID>", methods=["GET"])
-@cross_origin
 def nextSong(partyID: int):
     # Implement your logic here
-    return f"Next song for party {partyID}"
+    return jsonify({
+        "message" : "Next song for party {partyID}"
+    }), 200
 
 @app.route("/queue/<int:partyID>", methods=["GET"])
-@cross_origin
 def queue(partyID: int):
     # # Takes 3 songs from internal queue
     # partyID = probabilityDistro().keys()
     # return f"Queue for party {partyID[:3]}"
-    return "testing"
+    
+    return jsonify({
+        "message" : "testing"
+    }), 200
 
 #linear search sucks :<
 @app.route("/testEventCode/<string:eventCode>", methods=["GET"])
-@cross_origin
 def testEventCode(eventCode: str):
     for event in DB.grabCollection("Event").stream:
         if event.eventCode == eventCode:
-            return "{\"eventCodeFound\" : 1}"
-    return "{\"eventCodeFound\" : 0}"
+            return jsonify({
+                "eventCodeFound" : "true"
+            }), 200
+    
+    return jsonify({
+        "eventCodeFound" : "false"
+    }), 200
 
 # Direct database interactions
 
 #*****QUERY*****#
 
 @app.route("/event/<int:eventID>", methods=["GET"])
-@cross_origin
 def queryEvent(eventID: int):
-    return DB.getEventParams(eventID)
+    return jsonify(DB.getEventParams(eventID)), 200
     
 @app.route("/user/<int:userID>", methods=["GET"])
-@cross_origin
 def queryUser(userID: int):
-    return DB.getUserParams(userID)
+    return jsonify(DB.getUserParams(userID)), 200
 
 @app.route("/song/<int:songID>", methods=["GET"])
-@cross_origin
 def querySong(songID: int):
-    return DB.getSongParams(songID)
+    return jsonify(DB.getSongParams(songID)), 200
 
 @app.route("/reaction/<int:reactionID>", methods=["GET"])
-@cross_origin
 def queryReaction(reactionID: int):
-    return DB.getReactionParams(reactionID)
+    return jsonify(DB.getReactionParams(reactionID)), 200
 
 #*****CREATE*****#
 #all create funcs return ID of new stuff
 
 @app.route("/user/create", methods=["POST", "OPTIONS"])
-@cross_origin
 def createUser():
     if request.method == "OPTIONS":        
-        return '', 200
+        return ""
     
     userData = request.get_json()
     id = DB.createUser(userData)
     if id:
-        return "{\"id\" : id}"
+        return jsonify({
+            "id" : id
+        }), 200
     else:
-        return "ERR, user not found"
+        return jsonify({
+            "message" : "ERR creating user"
+        }), 400
 
 @app.route("/event/create", methods=["POST", "OPTIONS"])
-@cross_origin
 def createEvent():
     if request.method == "OPTIONS":
-        return '', 200
+        return ''
     
     eventData = request.get_json()
     id = DB.createUser(eventData)
     if id:
-        return "{\"id\" : id}"
+        return jsonify({
+            "id" : id
+        }), 200
     else:
-        return "ERR, event not found"
+        return jsonify({
+            "message" : "ERR creating event"
+        }), 400
 
 @app.route("/song/create", methods=["POST", "OPTIONS"])
-@cross_origin
 def createSong():
     if request.method == "OPTIONS":
-        return '', 200
+        return ''
     
     songData = request.get_json()
     id = DB.createUser(songData)
     if id:
-        return "{\"id\" : id}"
+        return jsonify({
+            "id" : id
+        }), 200
     else:
-        return "ERR, song not found"
+        return jsonify({
+            "message" : "ERR creating song"
+        }), 200
 
 @app.route("/reaction/create", methods=["POST", "OPTIONS"])
-@cross_origin
 def createReaction():
     if request.method == "OPTIONS":
-        return '', 200
+        return ''
     
     reactionData = request.get_json()
     id = DB.createUser(reactionData)
     if id:
-        return "{\"id\" : id}"
+        return jsonify({
+            "id" : id
+        }), 200
     else:
-        return "ERR, reaction not found"
+        return jsonify({
+            "message" : "ERR creating reaction"
+        }), 200
 
 #*****DELETE*****#
 
 @app.route("/user/delete", methods=["POST", "OPTIONS"])
-@cross_origin
 def deleteUser():
     if request.method == "OPTIONS":
-        return '', 200
+        return ''
     
     userData = request.get_json()
     rval = DB.deleteUser(userData)
     if rval:
-        return "{\"success\" : 100}"
+        return jsonify({
+            "message" : f"successful deletion of user ({userData})"
+            }), 200
     else:
-        return "{\"error, user not found\" : 200}"
+        return jsonify({
+            "message" : "error, user not found"
+        }), 400
 
 @app.route("/event/delete", methods=["POST", "OPTIONS"])
-@cross_origin
 def deleteEvent():
     if request.method == "OPTIONS":
-        return '', 200
+        return ''
     eventData = request.get_json()
     rval = DB.deleteUser(eventData)
     if rval:
-        return "{\"success\" : 100}"
+        return jsonify({
+            "message" : f"successful deletion of event ({eventData})"
+        }), 200
     else:
-        return "{\"error, event not found\" : 200}"
+        return jsonify({
+            "message" : "error, event not found"
+        }), 400
 
 @app.route("/song/delete", methods=["POST", "OPTIONS"])
-@cross_origin
 def deleteSong():
     if request.method == "OPTIONS":
-        return "{'', 200}"
+        return ''
     
     songData = request.get_json()
     rval = DB.deleteUser(songData)
     if rval:
-        return "{\"success\" : 100}"
+        return jsonify({
+            "message" : f"successful deletion of song ({songData})"
+        }), 200
     else:
-        return "{\"error, song not found\" : 200}"
+        return jsonify({
+            "message": "error, song not found"
+        }), 400
 
 @app.route("/reaction/delete", methods=["POST", "OPTIONS"])
-@cross_origin
 def deleteReaction():
     if request.method == "OPTIONS":
-        return '', 200
+        return ''
     
     reactionData = request.get_json()
     rval = DB.deleteUser(reactionData)
     if rval:
-        return "{\"success\" : 100}"
+        return jsonify({
+            "message" : "success"
+        }), 200
     else:
-        return "{\"error, reaction not found\" : 200}"
+        return jsonify({
+            "message" : "error, reaction not found"
+        }), 400
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
