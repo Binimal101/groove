@@ -25,14 +25,14 @@ def redundantRedirect():
         "message" : "Redirect endpoint"
     }), 200
 
-@app.route("/nextSong/<int:partyID>", methods=["GET"])
+@app.route("/nextSong/<partyID>", methods=["GET"])
 def nextSong(partyID: int):
     # Implement your logic here
     return jsonify({
         "message" : "Next song for party {partyID}"
     }), 200
 
-@app.route("/queue/<int:partyID>", methods=["GET"])
+@app.route("/queue/<partyID>", methods=["GET"])
 def queue(partyID: int):
     # # Takes 3 songs from internal queue
     # partyID = probabilityDistro().keys()
@@ -43,7 +43,7 @@ def queue(partyID: int):
     }), 200
 
 #linear search sucks :<
-@app.route("/testEventCode/<string:eventCode>", methods=["GET"])
+@app.route("/testEventCode/<eventCode>", methods=["GET"])
 def testEventCode(eventCode: str):
     for event in DB.grabCollection("Event").stream:
         if event.eventCode == eventCode:
@@ -59,19 +59,19 @@ def testEventCode(eventCode: str):
 
 #*****QUERY*****#
 
-@app.route("/event/<str:eventID>", methods=["GET"])
+@app.route("/event/<eventID>", methods=["GET"])
 def queryEvent(eventID: str):
     return jsonify(DB.getEventParams(eventID)), 200
     
-@app.route("/user/<str:userID>", methods=["GET"])
+@app.route("/user/<userID>", methods=["GET"])
 def queryUser(userID: str):
     return jsonify(DB.getUserParams(userID)), 200
 
-@app.route("/song/<str:songID>", methods=["GET"])
+@app.route("/song/<songID>", methods=["GET"])
 def querySong(songID: str):
     return jsonify(DB.getSongParams(songID)), 200
 
-@app.route("/reaction/<str:reactionID>", methods=["GET"])
+@app.route("/reaction/<reactionID>", methods=["GET"])
 def queryReaction(reactionID: str):
     return jsonify(DB.getReactionParams(reactionID)), 200
 
