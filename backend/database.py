@@ -12,35 +12,41 @@ class DB:
 
     @staticmethod
     def getEventParams(eventID: str):
-        for event in cli.collection("Event").stream():
-            if event.id == eventID:
-                return decompose(event)
-        return {"Error" : "document not found"}
+        eventDoc = cli.collection("Event").document(eventID).get()
+        if eventDoc.exists:
+            return decompose(eventDoc)
+        return {"Error" : f"{eventID} not found"}
 
     @staticmethod
     def getUserParams(userID: str):
-        for user in cli.collection("User").stream():
-            if user.id == userID:
-                return decompose(user)
-        return {"Error" : "document not found"}
+        userDoc = cli.collection("User").document(userID).get()
+        if userDoc.exists:
+            return decompose(userDoc)
+        return {"Error" : f"{userID} not found"}
 
     @staticmethod
     def getSongParams(songID: str):
-        for song in cli.collection("Song").stream():
-            if song.id == songID:
-                return decompose(song)
-        return {"Error" : "document not found"}
+        songDoc = cli.collection("Song").document(songID).get()
+        if songDoc.exists:
+            return decompose(songDoc)
+        return {"Error" : f"{songID} not found"}
 
     @staticmethod
     def getReactionParams(reactionID: str):
-        for reaction in cli.collection("Reaction").stream():
-            if reaction.id == reactionID:
-                return decompose(reaction)
-        return {"Error" : "document not found"}
+        reactionDoc = cli.collection("Reaction").document(reactionID).get()
+        if reactionDoc.exists:
+            return decompose(reactionDoc)
+        return {"Error" : f"{reactionID} not found"}
 
+    @staticmethod
+    def getUserSongParams(userSongID: str):
+        userSongDoc = cli.collection("UserSong").document(userSongID).get()
+        if userSongDoc.exists:
+            return decompose(userSongDoc)
+        return {"Error" : f"{userSongID} not found"}
 
     #setters & doc creation
-    #TODO all
+
     @staticmethod
     def createEvent(eventData: dict):
         doc = cli.collection("Event").add(eventData) #returns new ID for eventDocument
@@ -61,37 +67,61 @@ class DB:
         doc = cli.collection("Reaction").add(reactionData) #returns new ID for eventDocument
         return doc.id
     
-    #deletions
-    #TODO all
-
     @staticmethod
-    def deleteEvent(eventID: int):
-        for event in cli.collection("Event").stream():
-            if event.id == eventID:
-                event.delete()
-        return {"Error" : "document not found"}
+    def createUserSong(userSongData: dict):
+        doc = cli.collection("UserSong").add(userSongData) #returns new ID for eventDocument
+        return doc.id
     
-    @staticmethod
-    def deleteUser(userID: int):
-        for user in cli.collection("User").stream():
-            if user.id == userID:
-                user.delete()
-        return {"Error" : "document not found"}
+    #deletions
 
     @staticmethod
-    def deleteSong(songID: int):
-        for song in cli.collection("Song").stream():
-            if song.id == songID:
-                song.delete()
-        return {"Error" : "document not found"}
+    def deleteEvent(eventID: str):
+        eventRef = cli.collection("Event").document(eventID)
+        eventDoc = eventRef.get()
+        if eventDoc.exists:
+            eventRef.delete()
+            return {"message" : "successful deletion"}
+        return {"Error" : f"{eventID} not found"}
 
     @staticmethod
-    def deleteReaction(reactionID: int):
-        for reaction in cli.collection("Reaction").stream():
-            if reaction.id == reactionID:
-                reaction.delete()
-        return {"Error" : "document not found"}
+    def deleteUser(userID: str):
+        userRef = cli.collection("User").document(userID)
+        userDoc = userRef.get()
+        if userDoc.exists:
+            userRef.delete()
+            return {"message" : "successful deletion"}
+        return {"Error" : f"{userID} not found"}
+
+    @staticmethod
+    def deleteSong(songID: str):
+        songRef = cli.collection("Song").document(songID)
+        songDoc = songRef.get()
+        if songDoc.exists:
+            songRef.delete()
+            return {"message" : "successful deletion"}
+        return {"Error" : f"{songID} not found"}
+
+    @staticmethod
+    def deleteReaction(reactionID: str):
+        reactionRef = cli.collection("Reaction").document(reactionID)
+        reactionDoc = reactionRef.get()
+        if reactionDoc.exists:
+            reactionRef.delete()
+            return {"message" : "successful deletion"}
+        return {"Error" : f"{reactionID} not found"}
+
+    @staticmethod
+    def deleteSong(userSongID: str):
+        userSongRef = cli.collection("UserSong").document(userSongID)
+        userSongDoc = userSongRef.get()
+        if userSongDoc.exists:
+            userSongRef.delete()
+            return {"message" : "successful deletion"}
+        return {"Error" : f"{userSongID} not found"}
 
     @staticmethod
     def grabCollection(collectionName: str):
+        """
+        serverside use only
+        """
         return cli.collection(collectionName)
