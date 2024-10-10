@@ -29,18 +29,18 @@ class DB:
                 # Convert DocumentReference to a string (the document path)
                 cleanedData[key] = value.path
             
-            elif isinstance(value, firestore.Timestamp):
-                # Convert Timestamp to an ISO 8601 string
-                cleanedData[key] = value.to_datetime().isoformat()
-            
             elif isinstance(value, bytes):
                 # Convert bytes to a string (base64 encoding, etc.)
                 cleanedData[key] = value.decode('utf-8')
-            else:
+            elif (isinstance(value, str) or isinstance(value, int) or isinstance(value, float) or isinstance(value, bool) or 
+            isinstance(value, list) or isinstance(value, tuple)):
                 # Add the value as-is if it's already serializable
                 cleanedData[key] = value
-        
-        return cleanedData
+            elif isinstance(value, dict):
+                # Recursively clean nested dictionaries
+                cleanedData[key] = DB.toSerialize(value)
+
+        return cleanedData if len(cleanedData) else { None }
 
     #getters
 
