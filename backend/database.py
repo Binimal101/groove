@@ -7,12 +7,34 @@ firebase_admin.initialize_app()
 cli = firestore.client()
 
 def decompose(obj):
-    return DB.toSerialize(obj.to_dict())
+    return DB.toSerializeDict(obj.to_dict())
 
 class DB:
 
+    def toSerializeList(data: list):
+        cleaned = []
+        for d in data:
+            if isinstance(d, firestore.DocumentReference):
+                # Convert DocumentReference to a string (the document path)
+                cleaned.append(d.path)
+            elif isinstance(d, bytes):
+                # Convert bytes to a string (base64 encoding, etc.)
+                cleaned.append(d.decode('utf-8'))
+            elif isinstance(d, str) or isinstance(d, int) or isinstance(d, float) or isinstance(d, bool):
+                # Add the value as-is if it's already serializable
+                cleaned.append(d)
+            elif isinstance(d, list) or isinstance(d, tuple):
+                #recursively clean nested lists
+                cleaned.append(DB.toSerializeList(d))
+            elif isinstance(d, dict):
+                # Recursively clean nested dictionaries
+                cleaned.append(DB.toSerializeDict(d))
+            else:
+                cleaned.append(str(d))
+        return cleaned if len(cleaned) else [None]
+
     #clean data for API transmission
-    def toSerialize(data: dict):
+    def toSerializeDict(data: dict):
         """
         Converts Firestore data types that are not JSON serializable into serializable types.
         
@@ -32,13 +54,19 @@ class DB:
             elif isinstance(value, bytes):
                 # Convert bytes to a string (base64 encoding, etc.)
                 cleanedData[key] = value.decode('utf-8')
-            elif (isinstance(value, str) or isinstance(value, int) or isinstance(value, float) or isinstance(value, bool) or 
-            isinstance(value, list) or isinstance(value, tuple)):
+            elif isinstance(value, str) or isinstance(value, int) or isinstance(value, float) or isinstance(value, bool):
                 # Add the value as-is if it's already serializable
                 cleanedData[key] = value
+            elif isinstance(value, list) or isinstance(value, tuple):
+                #recursively clean nested lists
+                cleanedData[key] = DB.toSerializeList(value)
+
             elif isinstance(value, dict):
                 # Recursively clean nested dictionaries
-                cleanedData[key] = DB.toSerialize(value)
+                cleanedData[key] = DB.toSerializeDict(value)
+            else:
+                cleanedData[key] = str(value)
+
 
         return cleanedData if len(cleanedData) else { None }
 
