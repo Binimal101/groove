@@ -1,14 +1,48 @@
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
+import google.cloud
 
 firebase_admin.initialize_app()
 cli = firestore.client()
 
 def decompose(obj):
-    return obj.to_dict()    
+    return DB.toSerialize(obj.to_dict())
 
 class DB:
+
+    #clean data for API transmission
+    def toSerialize(data: dict):
+        """
+        Converts Firestore data types that are not JSON serializable into serializable types.
+        
+        Args:
+            data (dict): A dictionary with Firestore document data.
+        
+        Returns:
+            dict: A cleaned dictionary with JSON serializable data.
+        """
+
+        cleanedData = {}
+        for key, value in data.items():
+            if isinstance(value, firestore.DocumentReference):
+                # Convert DocumentReference to a string (the document path)
+                cleanedData[key] = value.path
+            
+            elif isinstance(value, firestore.Timestamp):
+                # Convert Timestamp to an ISO 8601 string
+                cleanedData[key] = value.to_datetime().isoformat()
+            
+            elif isinstance(value, bytes):
+                # Convert bytes to a string (base64 encoding, etc.)
+                cleanedData[key] = value.decode('utf-8')
+            else:
+                # Add the value as-is if it's already serializable
+                cleanedData[key] = value
+        
+        return cleanedData
+
+    #getters
 
     @staticmethod
     def getEventParams(eventID: str):
